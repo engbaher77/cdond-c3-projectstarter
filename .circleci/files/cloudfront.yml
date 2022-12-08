@@ -38,3 +38,11 @@ Outputs:
     Description: URL for website hosted on S3
     Export:
       Name: WorkflowID
+
+
+# aws cloudformation deploy \
+#          --template-file cloudfront.yml \
+#          --stack-name InitialStack\
+#          --parameter-overrides WorkflowID=udapeople-kk1j287dhjppmz437
+
+# aws cloudformation deploy --template-file .\.circleci\files\cloudfront.yml --stack-name stack-create-bucket-udapeople-kk1j287dhjppmz437123876 --parameter-overrides WorkflowID="udapeople-kk1j287dhjppmz437123876" --profile udacity1 --region us-east-1
