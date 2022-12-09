@@ -198,6 +198,8 @@ jobs:
             # cd ansible
             # pip install .
             python -m pip install --user ansible
+            echo 'export PATH="/usr/local/bin:$PATH' >> ~/.bashrc
+            source ~/.bashrc
             which ansible
       - run:
           name: Configure server
