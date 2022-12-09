@@ -172,26 +172,32 @@ jobs:
 
       - destroy_environment
 
-      # Here's where you will add some code to rollback on failure      
-
-#   configure-infrastructure:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # Your code here
-#             exit 1
-#       - run:
-#           name: Configure server
-#           command: |
-#             # Your code here
-#             exit 1
-#       # Here's where you will add some code to rollback on failure      
+  configure-infrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    
+    steps:
+      - attach_workspace:
+          at: ~/
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "6b:7d:b7:2c:5b:49:34:cb:34:ab:93:36:47:19:2b:73"
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --update ansible 
+      - run:
+          name: Read Inventory Data
+          command: |
+            cat ~/inventory
+      - run:
+          name: Configure server
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory configure-server.yml
+            # ansible-playbook -i ~/inventory main4.yml --private-key udacity-user.pem   
+ 
 
 #   run-migrations:
 #     docker:
