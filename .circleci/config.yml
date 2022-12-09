@@ -196,9 +196,9 @@ jobs:
           name: Configure server
           command: |
             cd .circleci/ansible
-            chmod 400 udapeople.pem
+            # chmod 400 udapeople.pem
             cat ./inventory
-            ansible-playbook -i ./inventory configure-server.yml --private-key udapeople.pem 
+            ansible-playbook -i inventory configure-server.yml
             # ansible-playbook -i ~/inventory main4.yml --private-key udacity-user.pem   
  
 
