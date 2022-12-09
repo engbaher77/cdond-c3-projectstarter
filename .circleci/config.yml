@@ -190,7 +190,7 @@ jobs:
           fingerprints:
             - "6b:7d:b7:2c:5b:49:34:cb:34:ab:93:36:47:19:2b:73"
       - run:
-          name: Install dependencies
+          name: Install dependenciess
           command: |
             # apk add --update ansible 
             # apt-get install python-minimal
