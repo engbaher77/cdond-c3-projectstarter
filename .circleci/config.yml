@@ -193,14 +193,11 @@ jobs:
           name: Install dependenciess
           command: |
             # apk add --update ansible 
-            # apt-get install python-minimal
-            # apt-get install python3
             python3 --version
-            git clone https://github.com/ansible/ansible.git
-            cd ansible
-            # virtualenv venv
-            # source venv/bin/activate
-            pip install .
+            # git clone https://github.com/ansible/ansible.git
+            # cd ansible
+            # pip install .
+            python -m pip install --user ansible
             which ansible
       - run:
           name: Configure server
