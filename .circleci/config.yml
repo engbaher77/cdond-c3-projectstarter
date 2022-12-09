@@ -197,8 +197,8 @@ jobs:
             # git clone https://github.com/ansible/ansible.git
             # cd ansible
             # pip install .
-            apt update -y
-            apt install ansible
+            apt-get update -y
+            apt install ansible -y
             which ansible
       - run:
           name: Configure server
