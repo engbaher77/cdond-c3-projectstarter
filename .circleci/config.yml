@@ -157,6 +157,11 @@ jobs:
               # exit 1
 
       - run:
+          name: Touch Inventory file 
+          command: |
+            echo [web] > ~/inventory
+
+      - run:
           name: Add back-end ip to ansible inventory
           command: |
             aws ec2 describe-instances \
