@@ -198,8 +198,8 @@ jobs:
             python3 --version
             git clone https://github.com/ansible/ansible.git
             cd ansible
-            virtualenv venv
-            source venv/bin/activate
+            # virtualenv venv
+            # source venv/bin/activate
             pip install .
             which ansible
       - run:
