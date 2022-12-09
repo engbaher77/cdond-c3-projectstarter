@@ -199,7 +199,7 @@ jobs:
             apt-get update -y
             apt-get install software-properties-common -y
             python3 -m pip install --user ansible
-            ansible --version
+            # ansible --version
       - run:
           name: Configure server
           command: |
