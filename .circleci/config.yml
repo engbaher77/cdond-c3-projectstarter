@@ -233,17 +233,14 @@ jobs:
 
   deploy-frontend:
     docker:
-      # - image: circleci/node:13.8.0
-      - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-            yum update
-            yum install epel-release
-            yum install nodejs
-            node --version
+            curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+            sudo installer -pkg AWSCLIV2.pkg -target /
 
       - run:
           name: Get backend url
