@@ -31,6 +31,7 @@ commands:
   #           fi
             
 jobs:
+
   build-frontend:
     docker:
       - image: circleci/node:13.8.0
@@ -243,10 +244,7 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            export BACKEND_IP = $(aws ec2 describe-instances \
-            --query 'Reservations[*].Instances[*].PublicIpAddress' \
-            --filters "Name=tag:project,Values=udapeople" \
-            --region us-east-1)
+            export BACKEND_IP = "54.208.147.217"
             # export BACKEND_IP=$(aws ec2 describe-instances...............)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "API_URL = ${API_URL}"
