@@ -239,9 +239,9 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            apt update -y
-            apt search awscli
-            apt install awscli -y
+            sudo apt update -y
+            sudo apt search awscli
+            sudo apt install awscli -y
 
       - run:
           name: Get backend url
