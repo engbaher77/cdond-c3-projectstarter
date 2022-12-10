@@ -240,7 +240,7 @@ jobs:
           name: Install dependencies
           command: |
             curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
-            sudo installer -pkg AWSCLIV2.pkg -target /
+            installer -pkg AWSCLIV2.pkg -target /
 
       - run:
           name: Get backend url
