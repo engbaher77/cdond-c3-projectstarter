@@ -296,10 +296,10 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      # - run:
-      #     name: Install dependencies
-      #     command: |
-      #       # your code here
+      - run:
+          name: Install dependencies
+          command: |
+              apt-get install curl
       # - run:
       #     name: Get backend url
       #     command: |
