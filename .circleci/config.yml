@@ -11,24 +11,28 @@ commands:
             aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
             aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
 
-  # revert-migrations:
-  #   description: Revert the last migration if successfully run in the current workflow.
-  #   parameters:
-  #     # Add parameter here     
-  #   steps:
-  #     - run:
-  #         name: Revert migrations
-  #         # Add when this will run
-  #         command: |
-  #           # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-  #           SUCCESS = 1
-  #           if(( $SUCCESS==1 )); 
-  #           then
-  #           #  cd ~/project/backend
-  #           #  npm install
-  #           #  Add revert code here. You can find this in the Getting Started section.
-  #             exit 1
-  #           fi
+  revert-migrations:
+    description: Revert the last migration
+    parameters:
+        workflow_id:
+            type: string      
+    steps:
+        - run:
+            name: Revert migrations
+            when: on_fail
+            command: |
+                # Your Memstash or kvdb.io GET URL code goes here
+                # Example: Memstash.io
+                SUCCESS=$(curl -H "token: e52b52de-ee26-41a5-86e8-e8dcc3d995a5" --request GET https://api.memstash.io/values/migration_<< parameters.workflow_id >>)
+                # Example: kvdb.io
+                SUCCESS=$(curl --insecure  https://kvdb.io/9GE4jRtKznmVKRfvdBABBe/migration_<< parameters.workflow_id >>)
+                # Logic for reverting the database state
+                if (( $SUCCESS == 1 ));
+                then
+                    cd ~/project/backend
+                    npm install
+                    npm run migration:revert
+                fi  
             
 jobs:
 
@@ -290,6 +294,8 @@ jobs:
             cat inventory
             ansible-playbook -i inventory deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
+      - destroy_environment
+      - revert-migrations
 
   smoke-test:
     docker:
@@ -329,21 +335,28 @@ jobs:
                 return 1
               fi
       # Here's where you will add some code to rollback on failure  
+      - destroy_environment
+      - revert-migrations
 
-#   cloudfront-update:
-#     docker:
-#       # Docker image here that supports AWS CLI
-#     steps:
-#       # Checkout code from git
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Update cloudfront distribution
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+  cloudfront-update:
+    docker:
+      # Docker image here that supports AWS CLI
+    steps:
+      # Checkout code from git
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+      - run:
+          name: Update cloudfront distribution
+          command: |
+            # Change the initial stack name, as applicable to you
+            aws cloudformation deploy \
+                    --template-file .circleci/files/cloudfront.yml \
+                    --stack-name InitialStack \
+                    --parameter-overrides WorkflowID="udapeople-c405f1e" \
+                    --tags project=udapeople
+      # Here's where you will add some code to rollback on failure  
 
 # cleanup:
 #     docker:
@@ -391,9 +404,9 @@ workflows:
       #     requires: [run-migrations]
       # - deploy-backend:
       #     requires: [run-migrations]
-      - smoke-test
+      # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
+      - cloudfront-update
       #     requires: [smoke-test]
       # - cleanup:
       #     requires: [cloudfront-update]
