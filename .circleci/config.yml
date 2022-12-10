@@ -264,22 +264,40 @@ jobs:
             # aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure      
                     
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+  deploy-backend:
+    docker:
+      - image: python:3.9.16
+    
+    steps:
+      - attach_workspace:
+          at: ~/
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "6b:7d:b7:2c:5b:49:34:cb:34:ab:93:36:47:19:2b:73"
+      - run:
+          name: Install dependenciess
+          command: |
+            python3 --version
+            apt-get update -y
+            apt install ansible -y
+            which ansible
+            apt install node
+            npm --version
+      - run:
+          name: Deploy-Backend
+          command: |
+            cd backend
+            npm i
+            npm run build
+            cd ..
+            # Zip the directory
+            tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
+            echo "Contents  of the inventory.txt file is -------"
+            cat inventory
+            ansible-playbook -i inventory.txt deploy-backend.yml
+      # Here's where you will add some code to rollback on failure  
 
 #   smoke-test:
 #     docker:
@@ -361,9 +379,9 @@ workflows:
           # requires: [deploy-infrastructure]
       # - run-migrations:
           # requires: [configure-infrastructure]
-      - deploy-frontend
+      # - deploy-frontend:
       #     requires: [run-migrations]
-      # - deploy-backend:
+      - deploy-backend
       #     requires: [run-migrations]
       # - smoke-test:
       #     requires: [deploy-backend, deploy-frontend]
