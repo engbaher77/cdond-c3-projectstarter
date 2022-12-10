@@ -1,0 +1,2 @@
+https://github.com/engbaher77/cdond-c3-projectstarter.git
+http://udapeople-c405f1e.s3-website-us-east-1.amazonaws.com
