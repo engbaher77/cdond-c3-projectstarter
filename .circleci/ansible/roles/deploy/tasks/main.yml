@@ -31,6 +31,17 @@
     path: ~/web
     state: directory
 
+- name: Executing node
+  shell: |
+    git clone https://github.com/engbaher77/cdond-c3-projectstarter.git
+    cd cdond-c3-projectstarter
+    cd backend
+    npm i
+    npm run build
+    # cd ..
+    # cp backend ./circleci/ansible/roles/deploy/files
+    # cd ./circleci/ansible/roles/deploy/files
+    ls
 # - name: Extract artifact.tar.gz into ~/web
 #   unarchive:
 #     src: artifact.tar.gz
@@ -39,7 +50,8 @@
 - name: Executing node
   shell: |
     ls
-    cd ~/web
+    # cd ~/web
+    cd cdond-c3-projectstarter/backend
     pm2 stop default
     pm2 start npm -- start
 
