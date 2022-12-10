@@ -293,13 +293,13 @@ jobs:
 
   smoke-test:
     docker:
-      - image: python:3.7-alpine3.11
+      - image: python:3.9.16
     steps:
       - checkout
-      - run:
-          name: Install dependencies
-          command: |
-              apt-get install curl
+      # - run:
+      #     name: Install dependencies
+      #     command: |
+      #         apt-get install curl
       # - run:
       #     name: Get backend url
       #     command: |
